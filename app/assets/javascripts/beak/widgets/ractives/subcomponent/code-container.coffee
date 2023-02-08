@@ -31,39 +31,42 @@ RactiveCodeContainerBase = Ractive.extend({
 
   _setupCodeMirror: ->
 
-    baseConfig = { mode: 'netlogo', theme: 'netlogo-default', value: @get('code').toString(), viewportMargin: Infinity }
+    baseConfig = { OnUpdate: (changed, update) => @_onUpdateFunction(changed, update) }
     config     = Object.assign({}, baseConfig, @get('extraConfig') ? {}, @get('injectedConfig') ? {})
-    @_editor   = new CodeMirror(@find("##{@get('id')}"), config)
-
-    @_editor.on('change', =>
-      code = @_editor.getValue()
-      @set('code', code)
-      @parent.fire('code-changed', code)
-      @get('onchange')(code)
-    )
+    @_editor   = new GalapagosEditor(@find("##{@get('id')}"), config)
+    this.setCode(@get('code').toString());
 
     @observe('isDisabled', (isDisabled) ->
-      @_editor.setOption('readOnly', if isDisabled then 'nocursor' else false)
-      classes = this.find('.netlogo-code').querySelector('.CodeMirror-scroll').classList
-      if isDisabled
-        classes.add('cm-disabled')
-      else
-        classes.remove('cm-disabled')
+      # @_editor.setOption('readOnly', if isDisabled then 'nocursor' else false)
+      # classes = this.find('.netlogo-code').querySelector('.CodeMirror-scroll').classList
+      # if isDisabled
+      #   classes.add('cm-disabled')
+      # else
+      #   classes.remove('cm-disabled')
+      @_editor.SetReadOnly(if isDisabled then true else false)
       return
     )
 
     return
+  
+  _onUpdateFunction: (changed, update) ->
+    if @_editor and changed
+      code = @_editor.GetCode()
+      @set('code', code)
+      @parent.fire('code-changed', code)
+      @get('onchange')(code)
+    return
 
   # () => Unit
-  refresh: ->
-    @_editor.refresh()
-    return
+  # refresh: ->
+  #   @_editor.refresh()
+  #   return
 
   # (String) => Unit
   setCode: (code) ->
     str = code.toString()
-    if @_editor? and @_editor.getValue() isnt str
-      @_editor.setValue(str)
+    if @_editor
+      @_editor.SetCode(str)
     return
 
   template:
@@ -107,16 +110,16 @@ RactiveCodeContainerMultiline = RactiveCodeContainerBase.extend({
 
   # (String, Int) => Unit
   highlightProcedure: (procedureName, index) ->
-    end   = @_editor.posFromIndex(index)
-    start = CodeMirror.Pos(end.line, end.ch - procedureName.length)
-    @_editor.setSelection(start, end)
+    # end   = @_editor.posFromIndex(index)
+    # start = CodeMirror.Pos(end.line, end.ch - procedureName.length)
+    @_editor.Select(index - procedureName.length, index)
     return
 
   # ({ start: Int, end: Int }) => Unit
   highlightLocation: (location) ->
-    start = @_editor.posFromIndex(location.start)
-    end   = @_editor.posFromIndex(location.end)
-    @_editor.setSelection(start, end)
+    # start = @_editor.posFromIndex(location.start)
+    # end   = @_editor.posFromIndex(location.end)
+    @_editor.Select(location.start, location.end)
     return
 
   # () => Unit
@@ -130,7 +133,7 @@ RactiveCodeContainerMultiline = RactiveCodeContainerBase.extend({
   jumpToCode: () ->
     location = @get('jumpToCode')
     if location? and @_editor?
-      @highlightLocation(location)
+      @_editor.JumpTo(location.start)
     return
 
   # () => CodeMirror
@@ -141,14 +144,20 @@ RactiveCodeContainerMultiline = RactiveCodeContainerBase.extend({
 
 RactiveCodeContainerOneLine = RactiveCodeContainerBase.extend({
 
+  data: -> {
+    extraConfig: {
+      OneLine: true
+    }
+  }
+
   oncomplete: ->
     @._super()
-    forceOneLine =
-      (_, change) ->
-        oneLineText = change.text.join('').replace(/\n/g, '')
-        change.update(change.from, change.to, [oneLineText])
-        true
-    @_editor.on('beforeChange', forceOneLine)
+    # forceOneLine =
+    #   (_, change) ->
+    #     oneLineText = change.text.join('').replace(/\n/g, '')
+    #     change.update(change.from, change.to, [oneLineText])
+    #     true
+    # @_editor.on('beforeChange', forceOneLine)
     return
 
 })
@@ -191,8 +200,8 @@ editFormCodeContainerFactory =
           #
           # Thus: This nonsense. --Jason B. (6/16/22)
           @observe('isExpanded', (newValue, oldValue) ->
-            if newValue is true and oldValue is false
-              setTimeout((=> @findComponent('codeContainer').refresh()), 0)
+            # if newValue is true and oldValue is false
+            #   setTimeout((=> @findComponent('codeContainer').refresh()), 0)
           )
 
           return

@@ -53,80 +53,81 @@ RactiveModelCodeComponent = Ractive.extend({
     $('#procedurenames-dropdown').trigger('chosen:updated')
     return
 
-  setupAutoComplete: (hintList) ->
-    CodeMirror.registerHelper('hintWords', 'netlogo', hintList)
-    editor = @findComponent('codeEditor').getEditor()
-    editor.on('keyup', (cm, event) =>
-      if not cm.state.completionActive and event.keyCode > 64 and event.keyCode < 91 and @get('autoCompleteStatus')
-        cm.showHint({completeSingle: false})
-    )
-    return
+  # setupAutoComplete: (hintList) ->
+  #   CodeMirror.registerHelper('hintWords', 'netlogo', hintList)
+  #   editor = @findComponent('codeEditor').getEditor()
+  #   editor.on('keyup', (cm, event) =>
+  #     if not cm.state.completionActive and event.keyCode > 64 and event.keyCode < 91 and @get('autoCompleteStatus')
+  #       cm.showHint({completeSingle: false})
+  #   )
+  #   return
 
-  netLogoHintHelper: (cm, options) ->
-    cur = cm.getCursor()
-    token = cm.getTokenAt(cur)
-    to = CodeMirror.Pos(cur.line, token.end)
-    if token.string and /\S/.test(token.string[token.string.length - 1])
-      term = token.string
-      from = CodeMirror.Pos(cur.line, token.start)
-    else
-      term = ''
-      from = to
-    found = options.words.filter( (word) -> word.slice(0, term.length) is term )
-    if found.length > 0
-      return { list: found, from: from, to: to }
+  # netLogoHintHelper: (cm, options) ->
+  #   cur = cm.getCursor()
+  #   token = cm.getTokenAt(cur)
+  #   to = CodeMirror.Pos(cur.line, token.end)
+  #   if token.string and /\S/.test(token.string[token.string.length - 1])
+  #     term = token.string
+  #     from = CodeMirror.Pos(cur.line, token.start)
+  #   else
+  #     term = ''
+  #     from = to
+  #   found = options.words.filter( (word) -> word.slice(0, term.length) is term )
+  #   if found.length > 0
+  #     return { list: found, from: from, to: to }
 
-  autoCompleteWords: ->
-    allKeywords       = new Set(keywords.all)
-    supportedKeywords = Array.from(allKeywords)
-      .filter( (kw) -> (not keywords.unsupported.includes(kw)) )
-      .map(    (kw) -> kw.replace("\\", "") )
-    Object.keys(CodeUtils.findProcedureNames(@get('code'), 'lower')).concat(supportedKeywords)
+  # autoCompleteWords: ->
+  #   allKeywords       = new Set(keywords.all)
+  #   supportedKeywords = Array.from(allKeywords)
+  #     .filter( (kw) -> (not keywords.unsupported.includes(kw)) )
+  #     .map(    (kw) -> kw.replace("\\", "") )
+  #   Object.keys(CodeUtils.findProcedureNames(@get('code'), 'lower')).concat(supportedKeywords)
 
-  toggleLineComments: (editor) ->
-    { start, end } = if (editor.somethingSelected())
-      { head, anchor } = editor.listSelections()[0]
-      if (head.line > anchor.line or (head.line is anchor.line and head.ch > anchor.ch))
-        { start: anchor, end: head }
-      else
-        { start: head, end: anchor }
-    else
-      cursor = editor.getCursor()
-      { start: cursor, end: cursor }
+  # toggleLineComments: (editor) ->
+  #   { start, end } = if (editor.somethingSelected())
+  #     { head, anchor } = editor.listSelections()[0]
+  #     if (head.line > anchor.line or (head.line is anchor.line and head.ch > anchor.ch))
+  #       { start: anchor, end: head }
+  #     else
+  #       { start: head, end: anchor }
+  #   else
+  #     cursor = editor.getCursor()
+  #     { start: cursor, end: cursor }
 
-    if (not editor.uncomment(start, end))
-      editor.lineComment(start, end)
+  #   if (not editor.uncomment(start, end))
+  #     editor.lineComment(start, end)
 
-    return
+  #   return
 
-  setupCodeUsagePopup: ->
-    editor = @findComponent('codeEditor').getEditor()
-    codeUsageMap = {
-      'Ctrl-U': =>
-        if editor.somethingSelected()
-          @setCodeUsage()
-      ,'Cmd-U': =>
-        if editor.somethingSelected()
-          @setCodeUsage()
-      ,'Ctrl-;': =>
-        @toggleLineComments(editor)
-        return
-      ,'Cmd-;': =>
-        @toggleLineComments(editor)
-        return
-    }
-    editor.addKeyMap(codeUsageMap)
+  # setupCodeUsagePopup: ->
+  #   editor = @findComponent('codeEditor').getEditor()
+  #   codeUsageMap = {
+  #     'Ctrl-U': =>
+  #       if editor.somethingSelected()
+  #         @setCodeUsage()
+  #     ,'Cmd-U': =>
+  #       if editor.somethingSelected()
+  #         @setCodeUsage()
+  #     ,'Ctrl-;': =>
+  #       @toggleLineComments(editor)
+  #       return
+  #     ,'Cmd-;': =>
+  #       @toggleLineComments(editor)
+  #       return
+  #   }
+  #   editor.addKeyMap(codeUsageMap)
 
-    editor.on('cursorActivity', (cm) =>
-      if @get('usageVisibility')
-        @set('usageVisibility', false)
-    )
+  #   editor.on('cursorActivity', (cm) =>
+  #     if @get('usageVisibility')
+  #       @set('usageVisibility', false)
+  #   )
 
-    return
+  #   return
 
   getCodeUsage: ->
     editor = @findComponent('codeEditor').getEditor()
-    selectedCode = editor.getSelection().trim()
+    # selectedCode = editor.getSelection().trim()
+    selectedCode = editor.GetSelectionCode().trim()
     @set('selectedCode', selectedCode)
     codeString = @get('code')
     check = new RegExp(selectedCode, "gm")
@@ -171,15 +172,15 @@ RactiveModelCodeComponent = Ractive.extend({
   on: {
     'complete': (_) ->
       @setupProceduresDropdown()
-      CodeMirror.registerHelper('hint', 'fromList', @netLogoHintHelper)
-      @setupAutoComplete(@autoCompleteWords())
-      @setupCodeUsagePopup()
+      # CodeMirror.registerHelper('hint', 'fromList', @netLogoHintHelper)
+      # @setupAutoComplete(@autoCompleteWords())
+      # @setupCodeUsagePopup()
       @jumpToProcedure()
       @jumpToCode()
       return
 
     'recompile': (_) ->
-      @setupAutoComplete(@autoCompleteWords())
+      # @setupAutoComplete(@autoCompleteWords())
       return
 
     'jump-to-usage': (context, usagePos) ->

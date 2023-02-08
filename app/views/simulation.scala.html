@@ -16,7 +16,7 @@
     @tagBuilder.pathToHTML("stylesheets/spinner.css")
     @tagBuilder.pathToHTML("stylesheets/alert.css")
   </head>
-  <body style="margin: 0px;">
+  <body>
     @views.html.spinner()
     <div id="alert-container"></div>
     <div id="netlogo-model-container" style="display: inline-block;"></div>
@@ -31,6 +31,7 @@
     @tagBuilder.pathToHTML("highcharts/modules/exporting.js")
     @tagBuilder.pathToHTML("highcharts/modules/export-data.js")
     @tagBuilder.pathToHTML("ractive/ractive.js")
+    @tagBuilder.pathToHTML("scripts/editor.bundle.js")
     @tagBuilder.pathToHTML("codemirror/lib/codemirror.js")
     @tagBuilder.pathToHTML("codemirror/addon/comment/comment.js")
     @tagBuilder.pathToHTML("codemirror/addon/dialog/dialog.js")

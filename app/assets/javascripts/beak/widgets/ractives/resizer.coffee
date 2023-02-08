@@ -15,7 +15,6 @@ RactiveResizer = Ractive.extend({
   computed: {
     dims: ->
       """
-      position: absolute;
       left: #{@get('left')}px; top: #{@get('top')}px;
       width: #{@get('width')}px; height: #{@get('height')}px;
       """
