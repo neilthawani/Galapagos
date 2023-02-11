@@ -2,12 +2,20 @@
  * General-purpose widget styles, applied regardless of what the widget "theme" is
  */
 
+.netlogo-model-container {
+  display: flex;
+  /* flex-direction: row; */
+  /* flex: 1 1 auto; */
+}
+
 .netlogo-model {
-  /* display: flex; */
-  padding: 20px;
+  display: flex;
+  /* padding: 20px; */
   /* flex-flow: column; */
+  flex-direction: row;
   font-size: 12px;
   font-family: "Lucida Grande", sans-serif;
+  /* margin: auto; */
   /* outline: none; Bad a11y */
 }
 
@@ -60,11 +68,13 @@
 }
 
 .netlogo-tab-area {
-  margin: 25px 10px;
+  /* margin: 25px 10px; */
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
   -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+  width: 100%;
+  height: max-content;
 }
 
 .netlogo-display-horizontal .netlogo-tab-area {
@@ -744,4 +754,10 @@ body {
   left: inherit !important;
   top: inherit !important;
   overflow: inherit !important;
+  width: inherit !important;
+  margin: auto;
+}
+
+.netlogo-widget:not(.netlogo-plot) {
+  /* width: max-content !important; */
 }

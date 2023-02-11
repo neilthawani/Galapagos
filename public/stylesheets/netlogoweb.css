@@ -29,12 +29,12 @@ input[type="range"] {
   background-color: #F9EE93;
 }
 
-.netlogo-tab-area {
+/* .netlogo-tab-area {
   border-color: #3A405A;
   position: absolute;
   right: 0;
   width: 33%;
-}
+} */
 
 .netlogo-tab {
   color: #FFF;

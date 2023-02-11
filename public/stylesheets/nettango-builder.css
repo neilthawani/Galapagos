@@ -644,9 +644,9 @@ body#ntp-body, html#ntp-body {
   top: 40px;
 }
 
-.netlogo-model {
+/* .netlogo-model {
   padding: 0 !important;
-}
+} */
 
 /* these "overrides" let us have a small as possible NetLogo model
   to give more space for the NetTango Web spaces when side-by-side. */
