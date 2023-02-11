@@ -106,7 +106,7 @@ SliderEditForm = EditForm.extend({
         <labeledInput id="{{id}}-value" labelStr="Default value:" name="value" type="number" value="{{value}}" attrs="required step='any'"
                       style="flex-grow: 1; text-align: right;" />
         <labeledInput id="{{id}}-units" labelStr="Units:" labelStyle="margin-left: 10px;" name="units" type="text" value="{{units}}"
-                      style="flex-grow: 1; padding: 4px;" />
+                      style="flex-grow: 1; " />
       </div>
 
       <spacer height="15px" />
@@ -196,8 +196,6 @@ RactiveSlider = RactiveWidget.extend({
 
     verticalDims:
       """
-      position: absolute;
-      left: {{ left }}px; top: {{ top }}px;
       width: {{ bottom - top }}px; height: {{ right - left }}px;
       transform: translateY({{ bottom - top }}px) rotate(270deg);
       transform-origin: top left;

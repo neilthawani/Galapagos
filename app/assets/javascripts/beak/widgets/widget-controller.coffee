@@ -136,6 +136,7 @@ class WidgetController
 
   # (String, () => Unit) => Unit
   setCode: (code, successCallback) =>
+    console.log('111')
     @ractive.set('code', code)
     @ractive.findComponent('codePane')?.setCode(code)
     @ractive.fire('controller.recompile', successCallback)

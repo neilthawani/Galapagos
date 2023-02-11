@@ -163,23 +163,23 @@ window.addEventListener("message", function (e) {
   }
 });
 
-if (isInFrame) {
-  var width = "", height = "";
-  window.setInterval(function() {
-    if (activeContainer.offsetWidth  !== width ||
-        activeContainer.offsetHeight !== height ||
-        (session !== undefined && document.title != pageTitle(session.modelTitle()))) {
-      if (session !== undefined) {
-        document.title = pageTitle(session.modelTitle());
-      }
-      width = activeContainer.offsetWidth;
-      height = activeContainer.offsetHeight;
-      parent.postMessage({
-        width:  activeContainer.offsetWidth,
-        height: activeContainer.offsetHeight,
-        title:  document.title,
-        type:   "nlw-resize"
-      }, "*");
-    }
-  }, 200);
-}
+// if (isInFrame) {
+//   var width = "", height = "";
+//   window.setInterval(function() {
+//     if (activeContainer.offsetWidth  !== width ||
+//         activeContainer.offsetHeight !== height ||
+//         (session !== undefined && document.title != pageTitle(session.modelTitle()))) {
+//       if (session !== undefined) {
+//         document.title = pageTitle(session.modelTitle());
+//       }
+//       width = activeContainer.offsetWidth;
+//       height = activeContainer.offsetHeight;
+//       parent.postMessage({
+//         width:  activeContainer.offsetWidth,
+//         height: activeContainer.offsetHeight,
+//         title:  document.title,
+//         type:   "nlw-resize"
+//       }, "*");
+//     }
+//   }, 200);
+// }

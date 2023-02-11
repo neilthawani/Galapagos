@@ -291,7 +291,7 @@ RactiveView = RactiveWidget.extend({
 
     view:
       """
-      <div id="{{id}}" class="netlogo-widget netlogo-view-container {{classes}}" style="{{dims}}"></div>
+      <div id="{{id}}" class="netlogo-widget netlogo-view-container {{classes}}"></div>
       """
 
   }

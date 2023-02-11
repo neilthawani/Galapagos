@@ -72,7 +72,7 @@ window.addEventListener("message", function(e) {
       // Quack, quack!
       // Who doesn't love duck typing? --Jason B. (11/9/15)
       if ([height, width, title].every(isValid)) {
-        modelContainer.width               = width;
+        modelContainer.width               = width + 20;
         // When we reset the model height, we lose any scrolling that was in place,
         // so we "copy" it back to the main document.  -Jeremy B March 2021
         const modelScrollTop               = modelContainer.contentDocument.body.scrollTop

@@ -86,7 +86,6 @@ RactiveWidget = RactiveDraggableAndContextable.extend({
       """
     dims: ->
       """
-      position: absolute;
       left: #{@get('left')}px; top: #{@get('top')}px;
       width: #{@get('right') - @get('left')}px; height: #{@get('bottom') - @get('top')}px;
       """
